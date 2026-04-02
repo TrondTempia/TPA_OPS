@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "description": "Tom eller redigerbar JSON-mal for RSW Rapport App",
+  "report": {
+    "reportChip": "Havarirapport",
+    "title": "RSW-ANLEGG",
+    "subtitle": "",
+    "reportType": "",
+    "systemStatus": "",
+    "affectedSystem": "",
+    "faultType": "",
+    "downtime": "",
+    "criticalLevel": "critical",
+    "criticalText": "",
+    "summaryTitle": "",
+    "summaryText": ""
+  }
+}

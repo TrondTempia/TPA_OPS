@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="RSW Rapport App – lokal HTML-app for tekniske havari- og servicerapporter med live forhåndsvisning og PDF-utskrift." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>RSW Rapport App</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="editor-panel no-print">
+      <div class="editor-header">
+        <div>
+          <p class="editor-kicker">Rapportbygger</p>
+          <h2>RSW rapportmal</h2>
+          <p class="editor-subtitle">Fyll ut feltene. Forhåndsvisningen oppdateres live.</p>
+        </div>
+        <div class="action-bar">
+          <button id="newReportBtn" type="button" class="btn btn-secondary">Ny rapport havari</button>
+          <button id="loadServiceReportBtn" type="button" class="btn btn-secondary">Ny rapport service</button>
+          <button id="loadExampleBtn" type="button" class="btn btn-secondary">Havarirapport</button>
+          <button id="loadServiceExampleBtn" type="button" class="btn btn-secondary">Servicerapport</button>
+          <button id="saveJsonBtn" type="button" class="btn btn-secondary">Lagre JSON</button>
+          <button id="loadJsonBtn" type="button" class="btn btn-secondary">Last inn JSON</button>
+          <button id="printBtn" type="button" class="btn btn-primary">Skriv ut PDF</button>
+          <input id="jsonFileInput" type="file" accept="application/json,.json" hidden />
+        </div>
+      </div>
+
+      <div id="saveStatus" class="save-status">Klar</div>
+
+      <div class="form-scroll">
+        <form id="reportForm">
+          <section class="form-section">
+            <h3>Toppseksjon</h3>
+            <label>Chip / etikett<input type="text" name="reportChip" placeholder="Havarirapport" /></label>
+            <label>Tittel<input type="text" name="title" placeholder="RSW-ANLEGG" /></label>
+            <label>Undertittel<input type="text" name="subtitle" placeholder="Foreløpig teknisk rapport — Dorin CO2-kompressorsystem" /></label>
+            <label>Rapporttype<input type="text" name="reportType" placeholder="Foreløpig / Teknisk" /></label>
+            <label>Status<input type="text" name="systemStatus" placeholder="⚠ Ute av drift" /></label>
+            <label>Berørt system<input type="text" name="affectedSystem" placeholder="RSW-anlegg / CO2-kompressor" /></label>
+            <label>Feiltype<input type="text" name="faultType" placeholder="Motorhavari – Brente viklinger" /></label>
+            <label>Estimert nedetid<input type="text" name="downtime" placeholder="~10 uker" /></label>
+            <input type="hidden" name="section1Title" value="Hendelsesbeskrivelse" />
+            <input type="hidden" name="section2Title" value="Konsekvenser" />
+            <input type="hidden" name="section3Title" value="Tiltak og tidslinje" />
+            <input type="hidden" name="section4Title" value="Anbefaling ved oppstart" />
+          </section>
+
+          <section class="form-section">
+            <h3>Kritisk statuslinje</h3>
+            <label>Varselnivå
+              <select name="criticalLevel">
+                <option value="critical">Kritisk</option>
+                <option value="urgent">Haster</option>
+                <option value="info">Informasjon</option>
+                <option value="resolved">Avklart</option>
+              </select>
+            </label>
+            <label>Varseltekst<input type="text" name="criticalText" placeholder="Kompressor havarert — ny enhet bestilt — endelig skadeomfang avklares ved oppstart" /></label>
+          </section>
+
+          <section class="form-section">
+            <h3>Sammendrag</h3>
+            <label>Overskrift<input type="text" name="summaryTitle" placeholder="Oversikt over hendelsen" /></label>
+            <label>Tekst<textarea name="summaryText" rows="8"></textarea></label>
+          </section>
+
+          <section class="form-section">
+            <h3>1. Hendelsesbeskrivelse</h3>
+            <label>Avsnitt 1<textarea name="eventP1" rows="5"></textarea></label>
+            <label>Avsnitt 2<textarea name="eventP2" rows="5"></textarea></label>
+            <label>Avsnitt 3<textarea name="eventP3" rows="5"></textarea></label>
+          </section>
+
+          <section class="form-section">
+            <h3>2. Konsekvenser</h3>
+            <div class="repeater-grid">
+              <div class="impact-editor"><label>Konsekvens 1 tekst<input type="text" name="impact1Text" /></label><label>Nivå<select name="impact1Level"><option value="danger">Kritisk</option><option value="warning">Advarsel</option><option value="info">Info</option><option value="neutral">Nøytral</option><option value="success">OK</option></select></label></div>
+              <div class="impact-editor"><label>Konsekvens 2 tekst<input type="text" name="impact2Text" /></label><label>Nivå<select name="impact2Level"><option value="danger">Kritisk</option><option value="warning">Advarsel</option><option value="info">Info</option><option value="neutral">Nøytral</option><option value="success">OK</option></select></label></div>
+              <div class="impact-editor"><label>Konsekvens 3 tekst<input type="text" name="impact3Text" /></label><label>Nivå<select name="impact3Level"><option value="danger">Kritisk</option><option value="warning">Advarsel</option><option value="info">Info</option><option value="neutral">Nøytral</option><option value="success">OK</option></select></label></div>
+              <div class="impact-editor"><label>Konsekvens 4 tekst<input type="text" name="impact4Text" /></label><label>Nivå<select name="impact4Level"><option value="danger">Kritisk</option><option value="warning">Advarsel</option><option value="info">Info</option><option value="neutral">Nøytral</option><option value="success">OK</option></select></label></div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>3. Tiltak og tidslinje</h3>
+            <div class="timeline-editor-grid">
+              <div class="timeline-editor-item"><label>Tittel 1<input type="text" name="timeline1Title" /></label><label>Tekst 1<textarea name="timeline1Text" rows="3"></textarea></label><label>Tag 1<input type="text" name="timeline1Tag" /></label><label>Nivå<select name="timeline1Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+              <div class="timeline-editor-item"><label>Tittel 2<input type="text" name="timeline2Title" /></label><label>Tekst 2<textarea name="timeline2Text" rows="3"></textarea></label><label>Tag 2<input type="text" name="timeline2Tag" /></label><label>Nivå<select name="timeline2Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+              <div class="timeline-editor-item"><label>Tittel 3<input type="text" name="timeline3Title" /></label><label>Tekst 3<textarea name="timeline3Text" rows="3"></textarea></label><label>Tag 3<input type="text" name="timeline3Tag" /></label><label>Nivå<select name="timeline3Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+              <div class="timeline-editor-item"><label>Tittel 4<input type="text" name="timeline4Title" /></label><label>Tekst 4<textarea name="timeline4Text" rows="3"></textarea></label><label>Tag 4<input type="text" name="timeline4Tag" /></label><label>Nivå<select name="timeline4Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+              <div class="timeline-editor-item"><label>Tittel 5<input type="text" name="timeline5Title" /></label><label>Tekst 5<textarea name="timeline5Text" rows="3"></textarea></label><label>Tag 5<input type="text" name="timeline5Tag" /></label><label>Nivå<select name="timeline5Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+              <div class="timeline-editor-item"><label>Tittel 6<input type="text" name="timeline6Title" /></label><label>Tekst 6<textarea name="timeline6Text" rows="3"></textarea></label><label>Tag 6<input type="text" name="timeline6Tag" /></label><label>Nivå<select name="timeline6Level"><option value="critical">Kritisk</option><option value="urgent">Haster</option><option value="info">Info</option><option value="dark">Mørk</option><option value="success">OK</option></select></label></div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>4. Anbefaling ved oppstart</h3>
+            <label>Tekst<textarea name="startupText" rows="5"></textarea></label>
+          </section>
+
+          <section class="form-section">
+            <h3>5. Konklusjon</h3>
+            <label>Seksjonsetikett<input type="text" name="conclusionEyebrow" placeholder="5 — Foreløpig konklusjon" /></label>
+            <label>Overskrift<input type="text" name="conclusionTitle" placeholder="Oppsummering og veien videre" /></label>
+            <label>Avsnitt 1<textarea name="conclusionP1" rows="5"></textarea></label>
+            <label>Avsnitt 2<textarea name="conclusionP2" rows="5"></textarea></label>
+          </section>
+        </form>
+      </div>
+    </aside>
+
+    <main class="preview-panel">
+      <div class="page">
+        <section class="hero">
+          <div id="previewChip" class="chip"></div>
+          <h1 id="previewTitle"></h1>
+          <p id="previewSubtitle" class="subtitle"></p>
+          <div class="meta-grid">
+            <div><div class="meta-label">Rapporttype</div><div id="previewReportType" class="meta-value"></div></div>
+            <div><div class="meta-label">Status</div><div id="previewSystemStatus" class="meta-value"></div></div>
+            <div><div class="meta-label">Berørt system</div><div id="previewAffectedSystem" class="meta-value"></div></div>
+            <div><div class="meta-label">Feiltype</div><div id="previewFaultType" class="meta-value"></div></div>
+            <div><div class="meta-label">Est. nedetid</div><div id="previewDowntime" class="meta-value"></div></div>
+          </div>
+          <img src="Logo_filer/Tempia hovedlogo sh.png" alt="Tempia Logo" class="hero-logo">
+        </section>
+
+        <div id="criticalInline" class="critical-inline"><span id="criticalIcon" class="icon"></span><span id="criticalText"></span></div>
+
+        <section class="summary-card"><div class="eyebrow">Sammendrag</div><h2 id="summaryTitle"></h2><p id="summaryText"></p></section>
+        <section class="section"><div class="section-head"><div class="section-number">1</div><div class="section-title" id="section1Title">Hendelsesbeskrivelse</div></div><div class="section-body"><p id="eventP1"></p><p id="eventP2"></p><p id="eventP3"></p></div></section>
+        <section class="section"><div class="section-head"><div class="section-number">2</div><div class="section-title" id="section2Title">Konsekvenser</div></div><div class="section-body"><div id="impactList" class="impact-list"></div></div></section>
+        <section class="section"><div class="section-head"><div class="section-number">3</div><div class="section-title" id="section3Title">Tiltak og tidslinje</div></div><div class="section-body"><div id="timelineWrap" class="timeline-wrap"></div></div></section>
+        <section class="section"><div class="section-head"><div class="section-number">4</div><div class="section-title" id="section4Title">Anbefaling ved oppstart</div></div><div class="startup-card"><p id="startupText"></p></div></section>
+        <section class="conclusion"><div id="conclusionEyebrow" class="eyebrow"></div><h2 id="conclusionTitle"></h2><p id="conclusionP1"></p><p id="conclusionP2"></p></section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

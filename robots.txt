@@ -1,0 +1,8 @@
+# Robot exclusion file for RSW Rapport App
+# This site is intended for internal use only and should not be indexed by search engines
+
+User-agent: *
+Disallow: /
+
+# Prevent all crawlers from accessing this site
+Crawl-delay: 0
