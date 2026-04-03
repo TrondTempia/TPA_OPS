@@ -3,9 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="RSW Rapport App – lokal HTML-app for tekniske havari- og servicerapporter med live forhåndsvisning og PDF-utskrift." />
+  <meta name="description" content="Rapport App – lokal HTML-app for tekniske havari- og servicerapporter med live forhåndsvisning og PDF-utskrift." />
   <meta name="robots" content="noindex, nofollow" />
-  <title>RSW Rapport App</title>
+  <meta name="theme-color" content="#15385e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Rapport App" />
+  <link rel="icon" type="image/x-icon" href="App_ikoner/web/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="App_ikoner/web/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="App_ikoner/web/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="App_ikoner/android/xxxhdpi_192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="App_ikoner/android/PlayStore_512x512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="App_ikoner/ios/iPhone_180x180.png" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Rapport App</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -116,6 +127,7 @@
     <main class="preview-panel">
       <div class="page">
         <section class="hero">
+          <div class="report-app-label">Rapport App</div>
           <div id="previewChip" class="chip"></div>
           <h1 id="previewTitle"></h1>
           <p id="previewSubtitle" class="subtitle"></p>
@@ -137,6 +149,32 @@
         <section class="section"><div class="section-head"><div class="section-number">3</div><div class="section-title" id="section3Title">Tiltak og tidslinje</div></div><div class="section-body"><div id="timelineWrap" class="timeline-wrap"></div></div></section>
         <section class="section"><div class="section-head"><div class="section-number">4</div><div class="section-title" id="section4Title">Anbefaling ved oppstart</div></div><div class="startup-card"><p id="startupText"></p></div></section>
         <section class="conclusion"><div id="conclusionEyebrow" class="eyebrow"></div><h2 id="conclusionTitle"></h2><p id="conclusionP1"></p><p id="conclusionP2"></p></section>
+
+        <footer class="report-footer" aria-label="Firmaopplysninger">
+          <div class="firm-footer">
+            <div class="firm-group firm-group-primary">
+              <div class="firm-label">Web</div>
+              <div class="firm-value">Tempia.no</div>
+            </div>
+            <div class="firm-group firm-group-primary">
+              <div class="firm-label">E-post</div>
+              <div class="firm-value">post@tempia.no</div>
+            </div>
+            <div class="firm-group">
+              <div class="firm-label">Adresse</div>
+              <div class="firm-value">Ørnvikveien 6, N-8300 Svolvær</div>
+            </div>
+            <div class="firm-group">
+              <div class="firm-label">Telefon</div>
+              <div class="firm-value">+47 975 34 147</div>
+            </div>
+            <div class="firm-group">
+              <div class="firm-label">Org.nr.</div>
+              <div class="firm-value">NO 999 324 622</div>
+            </div>
+          </div>
+          <div class="report-footer-meta">Tempia.no | post@tempia.no | Rapport App</div>
+        </footer>
       </div>
     </main>
   </div>

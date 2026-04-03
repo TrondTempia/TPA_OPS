@@ -55,6 +55,30 @@ Appen vil da være tilgjengelig på `https://brukernavn.github.io/repo-navn` (el
 - **Filstørrelser**: GitHub Pages har ingen filstørrelsebegrensning for statiske sider
 - **Subpath**: Hvis repo ligger under subpath (f.eks. `user.github.io/repo`), sjekk at alle relative paths virker
 
+## App-ikoner (iOS/Android/favicon)
+
+Ikoner ligger i `App_ikoner/` i prosjektroten:
+
+- `App_ikoner/ios/iPhone_180x180.png` (Apple Touch Icon)
+- `App_ikoner/android/xxxhdpi_192x192.png` (Android/Chrome)
+- `App_ikoner/android/PlayStore_512x512.png` (Android/Chrome)
+- `App_ikoner/web/favicon.ico`, `favicon-32x32.png`, `favicon-16x16.png` (vanlig favicon)
+
+Disse brukes av:
+
+- `<head>` i `index.html`
+- `manifest.json`
+
+Hvis du bytter ikonfiler, behold samme filnavn eller oppdater stiene i begge filene.
+
+### Sjekkliste før deploy
+
+- Verifiser at disse filene finnes: `iPhone_180x180.png`, `xxxhdpi_192x192.png`, `PlayStore_512x512.png`
+- Åpne appen og sjekk at ikonlenker i `<head>` ikke gir 404 i nettleserens Network-tab
+- Bekreft at `manifest.json` lastes uten 404 og viser riktige icon-paths
+- Test **Add to Home Screen** på iPhone (Safari) og Android (Chrome)
+- Hvis appen publiseres i repo-subpath, bekreft at `manifest.json` fortsatt laster og at ikonene vises riktig
+
 ## JSON-format
 
 Appen støtter både:

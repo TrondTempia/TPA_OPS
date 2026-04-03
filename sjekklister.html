@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produksjonssjekklister | Tempia</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    :root {
+      --bg: #e9edf2;
+      --panel: #ffffff;
+      --panel-soft: #f6f8fb;
+      --line: #d7dee8;
+      --line-strong: #b8c4d4;
+      --text: #10233b;
+      --muted: #5f728b;
+      --navy: #08264b;
+      --navy-2: #123966;
+      --navy-3: #1b4f83;
+      --accent: #ef4f5f;
+      --accent-dark: #cf3748;
+      --success: #198754;
+      --warning: #f59f00;
+      --danger: #d63349;
+      --shadow: 0 16px 40px rgba(10, 37, 64, 0.08);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --maxw: 1480px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(32, 89, 147, 0.10), transparent 28%),
+        linear-gradient(180deg, #eef2f7 0%, #e6ebf1 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .page-shell {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.88);
+      border-bottom: 1px solid rgba(16, 35, 59, 0.08);
+    }
+
+    .topbar-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 65%, #5f8fbd 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.11);
+    }
+
+    .brand-mark::before {
+      width: 44px;
+      height: 44px;
+      top: -10px;
+      right: -10px;
+    }
+
+    .brand-mark::after {
+      width: 26px;
+      height: 26px;
+      bottom: -6px;
+      left: -6px;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1.02rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-top: 2px;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .main-nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .main-nav a:hover {
+      background: #eef3f8;
+      color: var(--text);
+    }
+
+    .main-nav a.active {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: white;
+      box-shadow: 0 8px 20px rgba(8, 38, 75, 0.18);
+    }
+
+    .layout {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 24px 22px 36px;
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 84px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .side-card {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(16,35,59,0.08);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .side-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(239, 79, 95, 0.10);
+      color: var(--accent-dark);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .side-card h1 {
+      margin: 14px 0 8px;
+      font-size: 1.8rem;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+    }
+
+    .side-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .action-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: 0.18s ease;
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: white;
+      box-shadow: 0 12px 24px rgba(214, 51, 73, 0.18);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: white;
+      box-shadow: 0 12px 24px rgba(8, 38, 75, 0.18);
+    }
+
+    .btn-light {
+      background: #f3f6fa;
+      color: var(--text);
+      border: 1px solid #dbe3ec;
+    }
+
+    .side-card h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .tab-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .tab-section-label {
+      grid-column: 1 / -1;
+      font-size: 0.70rem;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 2px 0;
+      margin-top: 4px;
+    }
+
+    .tab-section-label:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .tab-button {
+      border: 1px solid #d9e1eb;
+      background: #f8fafc;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      text-align: left;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+      min-height: 66px;
+    }
+
+    .tab-button:hover {
+      background: #edf3f9;
+      border-color: #c5d4e4;
+    }
+
+    .tab-button.active {
+      color: white;
+      border-color: transparent;
+      background:
+        linear-gradient(135deg, rgba(8,38,75,1) 0%, rgba(27,79,131,1) 100%);
+      box-shadow: 0 12px 24px rgba(8, 38, 75, 0.20), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .tab-button.active small {
+      opacity: 0.80;
+    }
+
+    .tab-button small {
+      display: block;
+      margin-top: 4px;
+      font-weight: 600;
+      opacity: 0.75;
+    }
+
+    .content {
+      min-width: 0;
+    }
+
+    .panel {
+      display: none;
+      gap: 20px;
+    }
+
+    .panel.active {
+      display: grid;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      padding: 30px 30px 26px;
+      min-height: 220px;
+      color: white;
+      background:
+        radial-gradient(circle at 72% 20%, rgba(255,255,255,0.12), transparent 22%),
+        radial-gradient(circle at 40% 50%, rgba(255,255,255,0.08), transparent 20%),
+        linear-gradient(120deg, #031a37 0%, #0d3260 48%, #5a87b2 100%);
+      box-shadow: 0 24px 50px rgba(12, 35, 63, 0.24);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      right: -110px;
+      top: -110px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      left: 22%;
+      top: -80px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: white;
+      background: linear-gradient(135deg, #f15d6c 0%, #d94454 100%);
+      box-shadow: 0 10px 18px rgba(216, 68, 84, 0.24);
+    }
+
+    .hero h2 {
+      margin: 18px 0 10px;
+      font-size: clamp(2rem, 4vw, 3.85rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 860px;
+      color: rgba(255,255,255,0.88);
+      font-size: 1.06rem;
+      line-height: 1.55;
+    }
+
+    .hero-brand {
+      justify-self: end;
+      text-align: right;
+      align-self: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-brand strong {
+      display: block;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-brand span {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero-meta {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.16);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-meta-block {
+      min-width: 0;
+    }
+
+    .hero-meta-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 900;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 6px;
+    }
+
+    .hero-meta-value {
+      font-weight: 800;
+      font-size: 1.02rem;
+      line-height: 1.35;
+      color: white;
+      word-break: break-word;
+    }
+
+    .section-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(16,35,59,0.08);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(16,35,59,0.07);
+      background: linear-gradient(180deg, rgba(249,251,253,1) 0%, rgba(245,248,251,1) 100%);
+    }
+
+    .section-step {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+      box-shadow: 0 10px 18px rgba(8, 38, 75, 0.16);
+      flex: 0 0 auto;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+    }
+
+    .section-head p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .section-body {
+      padding: 22px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #d7e0ea;
+      background: #fbfcfe;
+      border-radius: 14px;
+      padding: 14px 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #8aaccf;
+      box-shadow: 0 0 0 4px rgba(94, 141, 191, 0.12);
+      background: white;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question {
+      background: linear-gradient(180deg, #fcfdff 0%, #f7f9fc 100%);
+      border: 1px solid #dfe6ee;
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .question-top {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .question-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-weight: 900;
+      color: var(--navy);
+      background: rgba(8, 38, 75, 0.08);
+      border: 1px solid rgba(8, 38, 75, 0.08);
+    }
+
+    .question-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.45;
+      padding-top: 4px;
+    }
+
+    .answer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .answer-row label {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .answer-row input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .answer-row span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 114px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid #d7e0ea;
+      background: white;
+      color: var(--text);
+      font-weight: 800;
+      transition: 0.18s ease;
+    }
+
+    .answer-row input:checked + span {
+      color: white;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+      box-shadow: 0 12px 20px rgba(8, 38, 75, 0.18);
+    }
+
+    .question textarea {
+      min-height: 86px;
+    }
+
+    .upload-box {
+      border: 1.5px dashed #c8d5e3;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fafcff;
+    }
+
+    .upload-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.98rem;
+    }
+
+    .upload-box p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .note-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(214, 51, 73, 0.22);
+      background: rgba(214, 51, 73, 0.06);
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .note-banner strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .placeholder-box {
+      border-radius: 24px;
+      border: 1px dashed #c7d3e0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(246,249,252,0.96));
+      padding: 34px 26px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .placeholder-box strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .footer-bar {
+      margin-top: 8px;
+      border-top: 1px solid rgba(16,35,59,0.08);
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* === Brand as link === */
+    a.brand {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    /* === Answer option color coding on screen === */
+    .answer-row input[value="Ja"]:checked + span {
+      background: linear-gradient(135deg, #16794a 0%, #1b9158 100%);
+      box-shadow: 0 10px 20px rgba(22, 121, 74, 0.22);
+    }
+
+    .answer-row input[value="Nei"]:checked + span {
+      background: linear-gradient(135deg, #c72d3e 0%, #d63446 100%);
+      box-shadow: 0 10px 20px rgba(199, 45, 62, 0.22);
+    }
+
+    .answer-row input[value="Ikke aktuelt"]:checked + span {
+      background: linear-gradient(135deg, #4a5f78 0%, #5c7090 100%);
+      box-shadow: 0 10px 20px rgba(74, 95, 120, 0.18);
+    }
+
+    .answer-row input[value="Annet"]:checked + span {
+      background: linear-gradient(135deg, #b06800 0%, #c47800 100%);
+      box-shadow: 0 10px 20px rgba(179, 104, 0, 0.22);
+    }
+
+    /* === Print document bar (hidden on screen) === */
+    .print-document-bar {
+      display: none;
+    }
+
+    /* === Print footer line (hidden on screen) === */
+    .print-footer-line {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-brand {
+        justify-self: start;
+        text-align: left;
+      }
+
+      .hero-meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .main-nav {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .layout {
+        padding: 16px 14px 26px;
+      }
+
+      .side-card,
+      .section-body,
+      .section-head {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .tab-list {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 22px 18px 20px;
+        border-radius: 24px;
+      }
+
+      .hero h2 {
+        font-size: 2.2rem;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .question-top {
+        flex-direction: column;
+      }
+
+      .answer-row span {
+        min-width: 96px;
+      }
+    }
+
+    /* PRINT */
+    @media print {
+      @page {
+        size: A4;
+        margin: 14mm 12mm 16mm 12mm;
+      }
+
+      body {
+        background: white !important;
+        color: #0a213b;
+      }
+
+      .topbar,
+      .sidebar,
+      .footer-bar,
+      .main-nav,
+      .action-grid,
+      .tab-list {
+        display: none !important;
+      }
+
+      .layout {
+        display: block;
+        max-width: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .content {
+        width: 100%;
+      }
+
+      .panel {
+        display: none !important;
+      }
+
+      .panel.active {
+        display: grid !important;
+        gap: 10px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 14mm 12mm 10mm;
+        border-radius: 0;
+        background:
+          linear-gradient(120deg, #072347 0%, #143963 58%, #5d89b5 100%) !important;
+        box-shadow: none;
+        border: 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .hero::before,
+      .hero::after {
+        display: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 220px;
+        gap: 12mm;
+      }
+
+      .hero h2 {
+        font-size: 27pt;
+        margin: 8mm 0 4mm;
+        line-height: 0.98;
+      }
+
+      .hero p {
+        font-size: 10.5pt;
+        line-height: 1.45;
+      }
+
+      .hero-brand strong {
+        font-size: 28pt;
+      }
+
+      .hero-brand span {
+        font-size: 7pt;
+        color: rgba(255,255,255,0.82);
+      }
+
+      .hero-meta {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6mm;
+        margin-top: 8mm;
+        padding-top: 5mm;
+      }
+
+      .hero-meta-label {
+        font-size: 7pt;
+      }
+
+      .hero-meta-value {
+        font-size: 10pt;
+      }
+
+      .section-card {
+        border: 1px solid #ccd6e0;
+        box-shadow: none;
+        border-radius: 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-top: 6mm;
+      }
+
+      .section-head {
+        background: #f1f5f9 !important;
+        padding: 5mm 6mm;
+      }
+
+      .section-head h3 {
+        font-size: 11pt;
+      }
+
+      .section-head p {
+        font-size: 8.5pt;
+      }
+
+      .section-step {
+        width: 9mm;
+        height: 9mm;
+        font-size: 9pt;
+        box-shadow: none;
+      }
+
+      .section-body {
+        padding: 5mm 6mm 6mm;
+      }
+
+      .field label {
+        font-size: 7.4pt;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        border: 1px solid #c6d2df;
+        background: white !important;
+        border-radius: 0;
+        padding: 3.2mm 3.4mm;
+        box-shadow: none !important;
+      }
+
+      .question {
+        border-radius: 0;
+        background: white !important;
+        border: 1px solid #d6dee8;
+        padding: 4.5mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .question-title {
+        font-size: 10pt;
+      }
+
+      .question-number {
+        width: 8mm;
+        height: 8mm;
+        font-size: 8pt;
+        border-radius: 50%;
+      }
+
+      .answer-row span {
+        min-width: 26mm;
+        padding: 2.5mm 3mm;
+        font-size: 8.5pt;
+        border-radius: 999px;
+      }
+
+      .upload-box {
+        border-radius: 0;
+        background: white !important;
+      }
+
+      .note-banner {
+        border-radius: 0;
+        background: rgba(214, 51, 73, 0.05) !important;
+      }
+
+      /* === Print document bar === */
+      .print-document-bar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8mm;
+        padding: 0 0 5mm;
+        border-bottom: 0.5pt solid #b0c0d0;
+        margin-bottom: 7mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .print-doc-left {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .print-doc-title {
+        font-size: 12pt;
+        font-weight: 900;
+        color: #06172e;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        margin-bottom: 1.5mm;
+      }
+
+      .print-doc-meta {
+        font-size: 8pt;
+        color: #5a7088;
+        line-height: 1.4;
+      }
+
+      .print-doc-badge {
+        padding: 2mm 4mm;
+        border: 0.5pt solid #9ab0c4;
+        font-size: 8pt;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #06172e;
+        white-space: nowrap;
+        align-self: center;
+      }
+
+      /* === Print footer line === */
+      .print-footer-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3.5mm 0 0;
+        margin-top: 10mm;
+        border-top: 0.5pt solid #b0c0d0;
+        font-size: 7.5pt;
+        color: #7090a8;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* === Answer color coding in print === */
+      .answer-row span {
+        min-width: 26mm;
+        padding: 2.5mm 3mm;
+        font-size: 8.5pt;
+        border-radius: 999px;
+        background: #f0f4f8 !important;
+        color: #6a8090 !important;
+        border-color: #cdd8e4 !important;
+        box-shadow: none !important;
+      }
+
+      .answer-row input[value="Ja"]:checked + span {
+        background: white !important;
+        color: #0a6d36 !important;
+        border: 1.5pt solid #0a6d36 !important;
+        box-shadow: none !important;
+        font-weight: 900 !important;
+      }
+
+      .answer-row input[value="Nei"]:checked + span {
+        background: white !important;
+        color: #a41f2c !important;
+        border: 1.5pt solid #a41f2c !important;
+        box-shadow: none !important;
+        font-weight: 900 !important;
+      }
+
+      .answer-row input[value="Ikke aktuelt"]:checked + span {
+        background: white !important;
+        color: #3e546c !important;
+        border: 1.5pt solid #3e546c !important;
+        box-shadow: none !important;
+        font-weight: 900 !important;
+      }
+
+      .answer-row input[value="Annet"]:checked + span {
+        background: white !important;
+        color: #8a5200 !important;
+        border: 1.5pt solid #8a5200 !important;
+        box-shadow: none !important;
+        font-weight: 900 !important;
+      }
+    }
+
+    /* === Compact mobile tabs === */
+    @media (max-width: 500px) {
+      .tab-list {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+
+      .tab-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tab-button {
+        min-width: 96px;
+        font-size: 0.87rem;
+        padding: 10px 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="./index.html" aria-label="Tempia – tilbake til plattformhjem">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <strong>Tempia</strong>
+            <span>Produksjonsplattform</span>
+          </div>
+        </a>
+
+        <nav class="main-nav" aria-label="Hovedmeny">
+          <a href="./index.html">Rapportbygger</a>
+          <a href="./sjekklister.html" class="active">Sjekklister</a>
+          <a href="./ks-bibliotek.html">KS-bibliotek</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <section class="side-card">
+          <span class="side-kicker">Produksjonskontroll</span>
+          <h1>Produksjonssjekklister</h1>
+          <p>
+            Flertrinns kontrollside for produksjon, test og kvalitetsdokumentasjon.
+            Bygget for PC, mobil og utskrift/PDF.
+          </p>
+
+          <div class="action-grid">
+            <button class="btn btn-light" id="btnNew" type="button">Ny</button>
+            <button class="btn btn-light" id="btnExample" type="button">Eksempel</button>
+            <button class="btn btn-primary full" id="btnPrint" type="button">Skriv ut aktiv sjekkliste</button>
+          </div>
+        </section>
+
+        <section class="side-card">
+          <h2>Velg sjekkliste</h2>
+          <div class="tab-list" role="tablist" aria-label="Sjekklister">
+            <div class="tab-section-label">Produksjonstrinn</div>
+            <button class="tab-button active" data-tab="trinn1" type="button">Trinn 1<small>Mekanisk</small></button>
+            <button class="tab-button" data-tab="trinn2" type="button">Trinn 2<small>Rør / sveising</small></button>
+            <button class="tab-button" data-tab="trinn3" type="button">Trinn 3<small>Isolering</small></button>
+            <button class="tab-button" data-tab="trinn4" type="button">Trinn 4<small>Elektro</small></button>
+            <button class="tab-button" data-tab="trinn5" type="button">Trinn 5<small>Under arbeid</small></button>
+            <button class="tab-button" data-tab="trinn6" type="button">Trinn 6<small>Under arbeid</small></button>
+            <div class="tab-section-label">Testing og godkjenning</div>
+            <button class="tab-button" data-tab="fat" type="button">FAT<small>Akseptansetest</small></button>
+            <button class="tab-button" data-tab="trykktesting" type="button">Trykk<small>Styrke / lekkasje</small></button>
+            <button class="tab-button" data-tab="protokoll" type="button">Protokoll<small>Sign-off</small></button>
+          </div>
+        </section>
+      </aside>
+
+      <main class="content">
+
+        <!-- TRINN 1 -->
+        <section class="panel active" id="tab-trinn1">
+          <div class="print-document-bar">
+            <div class="print-doc-left">
+              <div class="print-doc-title">Produksjonssjekkliste &mdash; Trinn 1: Mekanisk kontroll</div>
+              <div class="print-doc-meta">Tempia AS &nbsp;&middot;&nbsp; SJK-T1 &nbsp;&middot;&nbsp; Mekanisk produksjon &nbsp;&middot;&nbsp; Klar for registrering</div>
+            </div>
+            <div class="print-doc-badge">Trinn 1</div>
+          </div>
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 1 • Mekanisk kontroll</span>
+                <h2>Montering og komponentverifisering</h2>
+                <p>
+                  Kontroll av ramme, kompressor, fordamper, gasskjøler, væsketank,
+                  ventiler, sporbarhet og godkjenning.
+                </p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Technical production checklist</span>
+              </div>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Sjekkliste</div>
+                <div class="hero-meta-value">Trinn 1</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Disiplin</div>
+                <div class="hero-meta-value">Mekanisk produksjon</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Status</div>
+                <div class="hero-meta-value">Klar for registrering</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Dokumenttype</div>
+                <div class="hero-meta-value">Digital kontrolliste</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">1</div>
+              <div>
+                <h3>Grunninformasjon</h3>
+                <p>Prosjektdata, sporbarhet og ansvarlige roller.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field">
+                  <label for="t1_serial">Serienummer</label>
+                  <input id="t1_serial" name="t1_serial" type="text">
+                </div>
+                <div class="field">
+                  <label for="t1_model">Modell</label>
+                  <input id="t1_model" name="t1_model" type="text">
+                </div>
+                <div class="field">
+                  <label for="t1_date">Dato</label>
+                  <input id="t1_date" name="t1_date" type="date">
+                </div>
+                <div class="field">
+                  <label for="t1_assembler">Montør</label>
+                  <input id="t1_assembler" name="t1_assembler" type="text">
+                </div>
+                <div class="field">
+                  <label for="t1_supervisor">Trinnansvarlig / leder</label>
+                  <input id="t1_supervisor" name="t1_supervisor" type="text">
+                </div>
+                <div class="field">
+                  <label for="t1_traceability">Sporbarhet</label>
+                  <input id="t1_traceability" name="t1_traceability" type="text">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">2</div>
+              <div>
+                <h3>Kontrollpunkter</h3>
+                <p>Registrer Ja / Nei / Ikke aktuelt med kommentar ved behov.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="question-list">
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">1</div>
+                    <div class="question-title">Ramme uten skader; mål iht. 3D/STEP</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q1" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q1" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q1" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q1_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">2</div>
+                    <div class="question-title">Fester og bolthull iht. 3D/STEP</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q2" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q2" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q2" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q2_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">3</div>
+                    <div class="question-title">Riktig kompressor(er) iht. P&amp;ID</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q3" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q3" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q3" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q3_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">4</div>
+                    <div class="question-title">Kompressor plassert korrekt på ramme</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q4" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q4" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q4" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q4_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">5</div>
+                    <div class="question-title">Spacer/bolter/skiver/mutter iht. BOM</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q5" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q5" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q5" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q5_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">6</div>
+                    <div class="question-title">Riktig fordamper(e) iht. P&amp;ID</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q6" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q6" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q6" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q6_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">7</div>
+                    <div class="question-title">Fordamper 1 montert iht. 3D/STEP</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q7" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q7" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q7" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q7_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">8</div>
+                    <div class="question-title">Fordamper 2 montert iht. 3D/STEP (hvis aktuelt)</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q8" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q8" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q8" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q8_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">9</div>
+                    <div class="question-title">Visuell inspeksjon fordamper(e) utført</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q9" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q9" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q9" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q9_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">10</div>
+                    <div class="question-title">Riktig gasskjøler(e) iht. P&amp;ID</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q10" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q10" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q10" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q10_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">11</div>
+                    <div class="question-title">Gasskjøler 1 montert iht. 3D/STEP</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q11" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q11" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q11" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q11_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">12</div>
+                    <div class="question-title">Gasskjøler 2 montert iht. 3D/STEP (hvis aktuelt)</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q12" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q12" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q12" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q12_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">13</div>
+                    <div class="question-title">Visuell inspeksjon gasskjøler(e) utført</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q13" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q13" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q13" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q13_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">14</div>
+                    <div class="question-title">Riktig væsketank iht. P&amp;ID</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q14" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q14" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q14" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q14_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">15</div>
+                    <div class="question-title">Væsketank montert iht. 3D/STEP</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q15" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q15" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q15" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q15_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">16</div>
+                    <div class="question-title">Rørstusser på væsketank orientert korrekt</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q16" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q16" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q16" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q16_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">17</div>
+                    <div class="question-title">Visuell inspeksjon væsketank utført</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q17" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q17" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q17" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q17_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">18</div>
+                    <div class="question-title">Ventiler riktige iht. P&amp;ID og montert på ramme</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q18" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q18" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q18" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q18_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+
+                <div class="question">
+                  <div class="question-top">
+                    <div class="question-number">19</div>
+                    <div class="question-title">Bolter dratt til korrekt moment iht. spesifikasjon</div>
+                  </div>
+                  <div class="answer-row">
+                    <label><input type="radio" name="t1_q19" value="Ja"><span>Ja</span></label>
+                    <label><input type="radio" name="t1_q19" value="Nei"><span>Nei</span></label>
+                    <label><input type="radio" name="t1_q19" value="Ikke aktuelt"><span>Ikke aktuelt</span></label>
+                  </div>
+                  <div class="field"><textarea name="t1_q19_comment" placeholder="Kommentar"></textarea></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">3</div>
+              <div>
+                <h3>Bilder, bekreftelse og avvik</h3>
+                <p>Vedlegg, godkjenning og beskrivelse av tiltak.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="upload-box">
+                <strong>Last opp inspeksjonsbilder</strong>
+                <p>Legg ved foto av monteringer, kontrollpunkter og sporbarhet.</p>
+                <input type="file" name="t1_files" multiple>
+              </div>
+
+              <div style="height:16px"></div>
+
+              <div class="grid-2">
+                <div class="field">
+                  <label for="t1_confirm">Montørs bekreftelse</label>
+                  <input id="t1_confirm" name="t1_confirm" type="text">
+                </div>
+                <div class="field">
+                  <label for="t1_approval">Leder / KS-godkjenning</label>
+                  <select id="t1_approval" name="t1_approval">
+                    <option value="">Velg</option>
+                    <option>Godkjent</option>
+                    <option>Avvist – avvik registrert</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="t1_deviation">Beskriv avvik og tiltak</label>
+                  <textarea id="t1_deviation" name="t1_deviation"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="print-footer-line">
+            <span>Tempia AS &middot; Ørnvikveien 6, 8300 Svolver &middot; post@tempia.no</span>
+            <span>SJK-T1 &middot; Trinn 1 Mekanisk kontroll &middot; Digital produksjonssjekkliste</span>
+          </div>
+        </section>
+
+        <!-- TRINN 2 -->
+        <section class="panel" id="tab-trinn2">
+          <div class="print-document-bar">
+            <div class="print-doc-left">
+              <div class="print-doc-title">Produksjonssjekkliste &mdash; Trinn 2: Rør og sveising</div>
+              <div class="print-doc-meta">Tempia AS &nbsp;&middot;&nbsp; SJK-T2 &nbsp;&middot;&nbsp; Rørlegging / sveising &nbsp;&middot;&nbsp; Klar for registrering</div>
+            </div>
+            <div class="print-doc-badge">Trinn 2</div>
+          </div>
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 2 • Rør / sveising</span>
+                <h2>Rørlegging, sveising og trykktest</h2>
+                <p>
+                  Kontroll av WPS/WPQR, materialer, rørføring, muffer, sveiser,
+                  ventiler og testunderlag.
+                </p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Piping and welding control</span>
+              </div>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Sjekkliste</div>
+                <div class="hero-meta-value">Trinn 2</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Disiplin</div>
+                <div class="hero-meta-value">Rør / sveising</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Status</div>
+                <div class="hero-meta-value">Klar for registrering</div>
+              </div>
+              <div class="hero-meta-block">
+                <div class="hero-meta-label">Kontrolltype</div>
+                <div class="hero-meta-value">Produksjon og dokumentasjon</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">1</div>
+              <div>
+                <h3>Grunninformasjon</h3>
+                <p>Prosjekt- og ansvarsdata for rørlegging og sveising.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field"><label for="t2_serial">Serienummer</label><input id="t2_serial" name="t2_serial" type="text"></div>
+                <div class="field"><label for="t2_model">Modell</label><input id="t2_model" name="t2_model" type="text"></div>
+                <div class="field"><label for="t2_date">Dato</label><input id="t2_date" name="t2_date" type="date"></div>
+                <div class="field"><label for="t2_installer">Montør / sveiser</label><input id="t2_installer" name="t2_installer" type="text"></div>
+                <div class="field"><label for="t2_responsible">Trinnansvarlig</label><input id="t2_responsible" name="t2_responsible" type="text"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">2</div>
+              <div>
+                <h3>Kontrollpunkter</h3>
+                <p>Ja / Nei / Ikke aktuelt med kommentar ved avvik.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="question-list">
+                <div class="question"><div class="question-top"><div class="question-number">1</div><div class="question-title">Alle har gjennomgått og forstått gjeldende WPS/WPQR</div></div><div class="answer-row"><label><input type="radio" name="t2_q1" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q1" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q1" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">2</div><div class="question-title">Materialkvalitet, dimensjon og veggtykkelse verifisert</div></div><div class="answer-row"><label><input type="radio" name="t2_q2" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q2" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q2" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">3</div><div class="question-title">Rør/komponenter verifisert mot P&amp;ID, 3D og BOM</div></div><div class="answer-row"><label><input type="radio" name="t2_q3" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q3" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q3" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">4</div><div class="question-title">Arbeidsområde ryddig; utstyr kontrollert og klart</div></div><div class="answer-row"><label><input type="radio" name="t2_q4" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q4" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q4" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">5</div><div class="question-title">Rør lagt iht. 3D/P&amp;ID; klammer/fester montert</div></div><div class="answer-row"><label><input type="radio" name="t2_q5" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q5" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q5" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">6</div><div class="question-title">Muffer for transmittere på rett plass og penetrasjon bekreftet</div></div><div class="answer-row"><label><input type="radio" name="t2_q6" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q6" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q6" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">7</div><div class="question-title">Muffer for sikkerhetsventiler på rett plass og penetrasjon bekreftet</div></div><div class="answer-row"><label><input type="radio" name="t2_q7" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q7" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q7" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">8</div><div class="question-title">Muffer for serviceventiler på rett plass og penetrasjon bekreftet</div></div><div class="answer-row"><label><input type="radio" name="t2_q8" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q8" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q8" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">9</div><div class="question-title">Bakgass brukt på alle sveiser iht. prosedyre</div></div><div class="answer-row"><label><input type="radio" name="t2_q9" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q9" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q9" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">10</div><div class="question-title">Visuell sluttkontroll av alle sveiser uten feil</div></div><div class="answer-row"><label><input type="radio" name="t2_q10" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q10" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q10" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">11</div><div class="question-title">Styrketest/trykktest gjennomført og dokumentert</div></div><div class="answer-row"><label><input type="radio" name="t2_q11" value="Ja"><span>Ja</span></label><label><input type="radio" name="t2_q11" value="Nei"><span>Nei</span></label><label><input type="radio" name="t2_q11" value="Ikke aktuelt"><span>Ikke aktuelt</span></label></div></div>
+              </div>
+
+              <div style="height:16px"></div>
+
+              <div class="grid-2">
+                <div class="field full">
+                  <label for="t2_deviation">Kommentar ved avvik</label>
+                  <textarea id="t2_deviation" name="t2_deviation"></textarea>
+                </div>
+              </div>
+
+              <div style="height:16px"></div>
+
+              <div class="upload-box">
+                <strong>Foto og testprotokoller</strong>
+                <p>Legg ved relevant dokumentasjon fra sveise- og testarbeid.</p>
+                <input type="file" name="t2_files" multiple>
+              </div>
+            </div>
+          </section>
+          <div class="print-footer-line">
+            <span>Tempia AS &middot; Ørnvikveien 6, 8300 Svolvær &middot; post@tempia.no</span>
+            <span>SJK-T2 &middot; Trinn 2 Rør og sveising &middot; Digital produksjonssjekkliste</span>
+          </div>
+        </section>
+
+        <!-- TRINN 3 -->
+        <section class="panel" id="tab-trinn3">
+          <div class="print-document-bar">
+            <div class="print-doc-left">
+              <div class="print-doc-title">Produksjonssjekkliste &mdash; Trinn 3: Isolering</div>
+              <div class="print-doc-meta">Tempia AS &nbsp;&middot;&nbsp; SJK-T3 &nbsp;&middot;&nbsp; Isolasjon og tetthetskontroll &nbsp;&middot;&nbsp; Klar for registrering</div>
+            </div>
+            <div class="print-doc-badge">Trinn 3</div>
+          </div>
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 3 • Isolering</span>
+                <h2>Isolasjon, tetthet og sluttkontroll</h2>
+                <p>
+                  Kontroll av isolasjonstype, renhet, skjøter, merking og
+                  isolasjonsforberedelser videre i prosessen.
+                </p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Insulation quality control</span>
+              </div>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-meta-block"><div class="hero-meta-label">Sjekkliste</div><div class="hero-meta-value">Trinn 3</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Disiplin</div><div class="hero-meta-value">Isolering</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Status</div><div class="hero-meta-value">Klar for registrering</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Dokumentnivå</div><div class="hero-meta-value">Produksjon / KS</div></div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">1</div>
+              <div>
+                <h3>Grunninformasjon</h3>
+                <p>Serienummer og ansvarlige roller for isoleringsarbeid.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-4">
+                <div class="field"><label for="t3_serial">Serienummer</label><input id="t3_serial" name="t3_serial" type="text"></div>
+                <div class="field"><label for="t3_installer">Montør</label><input id="t3_installer" name="t3_installer" type="text"></div>
+                <div class="field"><label for="t3_responsible">Trinnansvarlig isolering</label><input id="t3_responsible" name="t3_responsible" type="text"></div>
+                <div class="field"><label for="t3_coordinator">Produksjonskoordinator</label><input id="t3_coordinator" name="t3_coordinator" type="text"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">2</div>
+              <div>
+                <h3>Kontrollpunkter</h3>
+                <p>Ja / Nei med kommentar ved behov.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="question-list">
+                <div class="question"><div class="question-top"><div class="question-number">1</div><div class="question-title">Er vakuumtest gjennomført før isolering?</div></div><div class="answer-row"><label><input type="radio" name="t3_q1" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q1" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q1_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">2</div><div class="question-title">Er riktig type og tykkelse isolasjon brukt iht. tegninger?</div></div><div class="answer-row"><label><input type="radio" name="t3_q2" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q2" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q2_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">3</div><div class="question-title">Er rør og flater rengjort og tørre uten olje/fukt før isolering?</div></div><div class="answer-row"><label><input type="radio" name="t3_q3" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q3" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q3_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">4</div><div class="question-title">Er alle skjøter og overganger i cellegummi tette, og er wrapping/tape utført tett og komplett?</div></div><div class="answer-row"><label><input type="radio" name="t3_q4" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q4" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q4_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">5</div><div class="question-title">Er alle rør, vekslere, tanker og komponenter merket for isolasjon isolert?</div></div><div class="answer-row"><label><input type="radio" name="t3_q5" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q5" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q5_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">6</div><div class="question-title">Er kuldebro-kritiske punkter kontrollert og isolasjonslokk montert der nødvendig?</div></div><div class="answer-row"><label><input type="radio" name="t3_q6" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q6" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q6_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">7</div><div class="question-title">Er områder for temperaturfølere utskåret og merket for Trinn 6?</div></div><div class="answer-row"><label><input type="radio" name="t3_q7" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q7" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q7_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">8</div><div class="question-title">Er visuell sluttkontroll utført for tetthet, dekning og mulig kondens?</div></div><div class="answer-row"><label><input type="radio" name="t3_q8" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q8" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q8_comment" placeholder="Kommentar"></textarea></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">9</div><div class="question-title">Er avvik registrert og er arbeidsområdet ryddet og rengjort?</div></div><div class="answer-row"><label><input type="radio" name="t3_q9" value="Ja"><span>Ja</span></label><label><input type="radio" name="t3_q9" value="Nei"><span>Nei</span></label></div><div class="field"><textarea name="t3_q9_comment" placeholder="Kommentar"></textarea></div></div>
+              </div>
+
+              <div style="height:16px"></div>
+
+              <div class="upload-box">
+                <strong>Bilder fra isoleringsarbeid</strong>
+                <p>Last opp oversiktsbilde og detaljbilde per rørstrekk eller hovedkomponent.</p>
+                <input type="file" name="t3_files" multiple>
+              </div>
+            </div>
+          </section>
+          <div class="print-footer-line">
+            <span>Tempia AS &middot; Ørnvikveien 6, 8300 Svolvær &middot; post@tempia.no</span>
+            <span>SJK-T3 &middot; Trinn 3 Isolering &middot; Digital produksjonssjekkliste</span>
+          </div>
+        </section>
+
+        <!-- TRINN 4 -->
+        <section class="panel" id="tab-trinn4">
+          <div class="print-document-bar">
+            <div class="print-doc-left">
+              <div class="print-doc-title">Produksjonssjekkliste &mdash; Trinn 4: Elektro og I/O</div>
+              <div class="print-doc-meta">Tempia AS &nbsp;&middot;&nbsp; SJK-T4 &nbsp;&middot;&nbsp; Elektro, kabling og funksjonskontroll &nbsp;&middot;&nbsp; Klar for registrering</div>
+            </div>
+            <div class="print-doc-badge">Trinn 4</div>
+          </div>
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 4 &bull; Elektro</span>
+                <h2>Elektro, I/O og FAT-klargjøring</h2>
+                <p>
+                  Kontroll av el-tegninger, kabling, komponenter, merking,
+                  funksjonstester og testcelleklarering.
+                </p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Electrical quality control</span>
+              </div>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-meta-block"><div class="hero-meta-label">Sjekkliste</div><div class="hero-meta-value">Trinn 4</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Disiplin</div><div class="hero-meta-value">Elektro</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Status</div><div class="hero-meta-value">Klar for registrering</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Fokus</div><div class="hero-meta-value">Kabling og funksjon</div></div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">1</div>
+              <div>
+                <h3>Grunninformasjon</h3>
+                <p>Prosjektdata og ansvarlige for elektroarbeidet.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field"><label for="t4_serial">Serienummer</label><input id="t4_serial" name="t4_serial" type="text"></div>
+                <div class="field"><label for="t4_model">Modell</label><input id="t4_model" name="t4_model" type="text"></div>
+                <div class="field"><label for="t4_date">Dato</label><input id="t4_date" name="t4_date" type="date"></div>
+                <div class="field"><label for="t4_installer">Montør</label><input id="t4_installer" name="t4_installer" type="text"></div>
+                <div class="field"><label for="t4_responsible">Trinnansvarlig elektro</label><input id="t4_responsible" name="t4_responsible" type="text"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">2</div>
+              <div>
+                <h3>Kontrollpunkter</h3>
+                <p>Ja / Nei / Annet med samlet kommentarfelt.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="question-list">
+                <div class="question"><div class="question-top"><div class="question-number">1</div><div class="question-title">Er elektriske tegninger oppdatert og samsvarer med installasjonen?</div></div><div class="answer-row"><label><input type="radio" name="t4_q1" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q1" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q1" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">2</div><div class="question-title">Er det samsvar mellom el-skjema, P&amp;ID og BOM mot faktisk installasjon?</div></div><div class="answer-row"><label><input type="radio" name="t4_q2" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q2" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q2" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">3</div><div class="question-title">Er alle komponenter i henhold til BOM?</div></div><div class="answer-row"><label><input type="radio" name="t4_q3" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q3" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q3" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">4</div><div class="question-title">Er kabeltype og tverrsnitt korrekt for alle transmittere og komponenter?</div></div><div class="answer-row"><label><input type="radio" name="t4_q4" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q4" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q4" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">5</div><div class="question-title">Er aktuatorer riktig type og korrekt koblet?</div></div><div class="answer-row"><label><input type="radio" name="t4_q5" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q5" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q5" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">6</div><div class="question-title">Er temperatursensorer riktig type og korrekt plassert iht. tegning?</div></div><div class="answer-row"><label><input type="radio" name="t4_q6" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q6" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q6" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">7</div><div class="question-title">Er kommunikasjonskabler riktig type og montert korrekt?</div></div><div class="answer-row"><label><input type="radio" name="t4_q7" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q7" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q7" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">8</div><div class="question-title">Er alle kabler merket korrekt i begge ender?</div></div><div class="answer-row"><label><input type="radio" name="t4_q8" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q8" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q8" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">9</div><div class="question-title">Er alle koblinger strammet og korrekt isolert?</div></div><div class="answer-row"><label><input type="radio" name="t4_q9" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q9" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q9" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">10</div><div class="question-title">Er I/O-test gjennomført og godkjent?</div></div><div class="answer-row"><label><input type="radio" name="t4_q10" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q10" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q10" value="Annet"><span>Annet</span></label></div></div>
+                <div class="question"><div class="question-top"><div class="question-number">11</div><div class="question-title">Er anlegget klart for FAT?</div></div><div class="answer-row"><label><input type="radio" name="t4_q11" value="Ja"><span>Ja</span></label><label><input type="radio" name="t4_q11" value="Nei"><span>Nei</span></label><label><input type="radio" name="t4_q11" value="Annet"><span>Annet</span></label></div></div>
+              </div>
+
+              <div style="height:16px"></div>
+
+              <div class="field full">
+                <label for="t4_comments">Kommentarer</label>
+                <textarea id="t4_comments" name="t4_comments"></textarea>
+              </div>
+            </div>
+          </section>
+          <div class="print-footer-line">
+            <span>Tempia AS &middot; Ørnvikveien 6, 8300 Svolvær &middot; post@tempia.no</span>
+            <span>SJK-T4 &middot; Trinn 4 Elektro og I/O &middot; Digital produksjonssjekkliste</span>
+          </div>
+        </section>
+
+        <!-- TRINN 5 -->
+        <section class="panel" id="tab-trinn5">
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 5</span>
+                <h2>Klargjort for neste utbygging</h2>
+                <p>Denne sjekklisten er satt opp som plassholder og kan bygges videre i samme struktur.</p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Future workflow</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="placeholder-box">
+            <strong>Trinn 5 er ikke fylt ut ennå</strong>
+            Legg inn felter, kontrollpunkter og eksempeldata når innholdet er klart.
+          </div>
+        </section>
+
+        <!-- TRINN 6 -->
+        <section class="panel" id="tab-trinn6">
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trinn 6</span>
+                <h2>Klargjort for neste utbygging</h2>
+                <p>Denne sjekklisten er satt opp som plassholder og kan bygges videre i samme struktur.</p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Future workflow</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="placeholder-box">
+            <strong>Trinn 6 er ikke fylt ut ennå</strong>
+            Legg inn felter, kontrollpunkter og eksempeldata når innholdet er klart.
+          </div>
+        </section>
+
+        <!-- FAT -->
+        <section class="panel" id="tab-fat">
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">FAT</span>
+                <h2>Factory Acceptance Test</h2>
+                <p>Denne siden er klargjort som base for egen FAT-protokoll og kontrollflyt.</p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Acceptance workflow</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="placeholder-box">
+            <strong>FAT-siden er klargjort</strong>
+            Bygg ut med testpunkter, sign-off, måleverdier og dokumentasjon når dere er klare.
+          </div>
+        </section>
+
+        <!-- TRYKKTESTING -->
+        <section class="panel" id="tab-trykktesting">
+          <div class="print-document-bar">
+            <div class="print-doc-left">
+              <div class="print-doc-title">Testprotokoll &mdash; Trykktesting: Styrke, lekkasje og vakuum</div>
+              <div class="print-doc-meta">Tempia AS &nbsp;&middot;&nbsp; TTP-01 &nbsp;&middot;&nbsp; Produksjon / KS &nbsp;&middot;&nbsp; Klar for registrering</div>
+            </div>
+            <div class="print-doc-badge">Trykktesting</div>
+          </div>
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Trykktesting</span>
+                <h2>Styrketest, lekkasjetest og vakuumtest</h2>
+                <p>
+                  Testprotokoll for produksjon og kvalitet med tydelig oppdeling,
+                  logiske testblokker og printvennlig dokumentstruktur.
+                </p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Pressure testing protocol</span>
+              </div>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-meta-block"><div class="hero-meta-label">Testtype</div><div class="hero-meta-value">Trykktest / vakuum</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Bruksområde</div><div class="hero-meta-value">Produksjon / KS</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Status</div><div class="hero-meta-value">Klar for registrering</div></div>
+              <div class="hero-meta-block"><div class="hero-meta-label">Dokument</div><div class="hero-meta-value">Digital testprotokoll</div></div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">1</div>
+              <div>
+                <h3>Grunninformasjon</h3>
+                <p>Basisdata for testobjektet.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-2">
+                <div class="field">
+                  <label for="pt_serial">Serienummer</label>
+                  <input id="pt_serial" name="pt_serial" type="text">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="note-banner">
+            <div>⚠️</div>
+            <div>
+              <strong>Viktig testnotat</strong>
+              Registrer avvik tydelig dersom det oppdages lekkasje, trykkfall eller
+              feil ved visuell kontroll under test.
+            </div>
+          </div>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">2</div>
+              <div>
+                <h3>Styrketest</h3>
+                <p>Testtrykk, varighet, visuell kontroll og rapporttekst.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field">
+                  <label for="pt_strength_pressure">Satt test-trykk</label>
+                  <input id="pt_strength_pressure" name="pt_strength_pressure" type="text" placeholder="LP XX bar - MP N/A - HP XX bar">
+                </div>
+                <div class="field">
+                  <label for="pt_strength_time">Testtid</label>
+                  <input id="pt_strength_time" name="pt_strength_time" type="text">
+                </div>
+                <div class="field">
+                  <label for="pt_strength_deviation">Avvik ved visuell kontroll?</label>
+                  <select id="pt_strength_deviation" name="pt_strength_deviation">
+                    <option value="">Velg</option>
+                    <option>JA</option>
+                    <option>NEI</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="pt_strength_report">Rapport for styrkeprøve</label>
+                  <textarea id="pt_strength_report" name="pt_strength_report"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">3</div>
+              <div>
+                <h3>Lekkasjetest</h3>
+                <p>Oppsett og registrering for lekkasjeprøve.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field">
+                  <label for="pt_leak_pressure">Satt test-trykk</label>
+                  <input id="pt_leak_pressure" name="pt_leak_pressure" type="text" placeholder="LP XX bar - MP N/A - HP XX bar">
+                </div>
+                <div class="field">
+                  <label for="pt_leak_time">Testtid</label>
+                  <input id="pt_leak_time" name="pt_leak_time" type="text">
+                </div>
+                <div class="field">
+                  <label for="pt_leak_deviation">Avvik ved visuell kontroll?</label>
+                  <select id="pt_leak_deviation" name="pt_leak_deviation">
+                    <option value="">Velg</option>
+                    <option>JA</option>
+                    <option>NEI</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="pt_leak_report">Rapport for lekkasjeprøve</label>
+                  <textarea id="pt_leak_report" name="pt_leak_report"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <div class="section-head">
+              <div class="section-step">4</div>
+              <div>
+                <h3>Vakuumtest</h3>
+                <p>Registrering av vakuumnivå, varighet og observasjoner.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="grid-3">
+                <div class="field">
+                  <label for="pt_vacuum_value">Satt vakuum i mbar</label>
+                  <input id="pt_vacuum_value" name="pt_vacuum_value" type="text" placeholder="LP XX Mbar - MP N/A - HP XX Mbar">
+                </div>
+                <div class="field">
+                  <label for="pt_vacuum_time">Testtid</label>
+                  <input id="pt_vacuum_time" name="pt_vacuum_time" type="text">
+                </div>
+                <div class="field">
+                  <label for="pt_vacuum_deviation">Avvik ved visuell kontroll?</label>
+                  <select id="pt_vacuum_deviation" name="pt_vacuum_deviation">
+                    <option value="">Velg</option>
+                    <option>JA</option>
+                    <option>NEI</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="pt_vacuum_report">Rapport for vakuumtest</label>
+                  <textarea id="pt_vacuum_report" name="pt_vacuum_report"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="print-footer-line">
+            <span>Tempia AS &middot; Ørnvikveien 6, 8300 Svolvær &middot; post@tempia.no</span>
+            <span>TTP-01 &middot; Trykktesting Styrke / Lekkasje / Vakuum &middot; Digital testprotokoll</span>
+          </div>
+        </section>
+
+        <!-- PROTOKOLL -->
+        <section class="panel" id="tab-protokoll">
+          <section class="hero">
+            <div class="hero-grid">
+              <div>
+                <span class="hero-chip">Protokoll</span>
+                <h2>Klargjort for videre dokumentasjon</h2>
+                <p>Denne siden er satt opp som base for protokollflyt, sign-off og dokumentlagring.</p>
+              </div>
+              <div class="hero-brand">
+                <strong>TEMPIA</strong>
+                <span>Protocol workflow</span>
+              </div>
+            </div>
+          </section>
+
+          <div class="placeholder-box">
+            <strong>Protokoll er ikke bygget ut ennå</strong>
+            Bruk samme grafiske struktur når innholdet skal inn senere.
+          </div>
+        </section>
+
+        <div class="footer-bar">
+          <span>Tempia AS &nbsp;&middot;&nbsp; Produksjonsplattform</span>
+          <span>Produksjonssjekklister &nbsp;&middot;&nbsp; Print/PDF-klar</span>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabButtons = document.querySelectorAll(".tab-button");
+      const panels = document.querySelectorAll(".panel");
+
+      function activateTab(tabName) {
+        tabButtons.forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.tab === tabName);
+        });
+
+        panels.forEach(panel => {
+          panel.classList.toggle("active", panel.id === `tab-${tabName}`);
+        });
+
+        // Scroll content area back to top on tab switch
+        const content = document.querySelector(".content");
+        if (content) {
+          content.scrollTo({ top: 0 });
+          window.scrollTo({ top: document.querySelector(".layout")?.offsetTop ?? 0, behavior: "smooth" });
+        }
+      }
+
+      tabButtons.forEach(button => {
+        button.addEventListener("click", () => activateTab(button.dataset.tab));
+      });
+
+      document.getElementById("btnPrint")?.addEventListener("click", () => {
+        window.print();
+      });
+
+      document.getElementById("btnNew")?.addEventListener("click", () => {
+        const active = document.querySelector(".panel.active");
+        if (!active) return;
+
+        active.querySelectorAll("input[type='text'], input[type='date'], textarea").forEach(el => {
+          el.value = "";
+        });
+
+        active.querySelectorAll("input[type='radio']").forEach(el => {
+          el.checked = false;
+        });
+
+        active.querySelectorAll("select").forEach(el => {
+          el.selectedIndex = 0;
+        });
+
+        active.querySelectorAll("input[type='file']").forEach(el => {
+          el.value = "";
+        });
+      });
+
+      document.getElementById("btnExample")?.addEventListener("click", () => {
+        const active = document.querySelector(".panel.active");
+        if (!active) return;
+
+        if (active.id === "tab-trinn1") {
+          setValue("t1_serial", "0092");
+          setValue("t1_model", "Dorin CD4501H");
+          setValue("t1_date", "2026-03-27");
+          setValue("t1_assembler", "Aage");
+          setValue("t1_supervisor", "Aage / Hussein");
+          setValue("t1_traceability", "RSW 0092");
+          checkRadio("t1_q1", "Ja");
+          checkRadio("t1_q2", "Ja");
+          checkRadio("t1_q3", "Ja");
+          checkRadio("t1_q4", "Ja");
+          checkRadio("t1_q5", "Ja");
+          setValue("t1_confirm", "Aage");
+          setSelect("t1_approval", "Godkjent");
+        }
+
+        if (active.id === "tab-trinn2") {
+          setValue("t2_serial", "20094");
+          setValue("t2_model", "Co2pro- CH");
+          setValue("t2_date", "2026-03-13");
+          setValue("t2_installer", "Dragan og Simon");
+          setValue("t2_responsible", "Simon R");
+          setValue("t2_deviation", "Et rør er ikke bygget etter tegning");
+        }
+
+        if (active.id === "tab-trinn3") {
+          setValue("t3_serial", "0091");
+          setValue("t3_installer", "Andrius");
+          setValue("t3_responsible", "Andrius");
+          setValue("t3_coordinator", "A.B");
+        }
+
+        if (active.id === "tab-trinn4") {
+          setValue("t4_serial", "0091");
+          setValue("t4_model", "Dorin 4501H");
+          setValue("t4_date", "2026-03-12");
+          setValue("t4_installer", "Vidar / Johannes");
+          setValue("t4_responsible", "Vidar / Johannes");
+          setValue("t4_comments", "Eksempelkommentarer lastet inn.");
+        }
+
+        if (active.id === "tab-trykktesting") {
+          setValue("pt_serial", "0099");
+          setValue("pt_strength_pressure", "LP 120 bar - MP N/A - HP 120 bar");
+          setValue("pt_strength_time", "30 min");
+          setSelect("pt_strength_deviation", "NEI");
+          setValue("pt_strength_report", "GC ok");
+
+          setValue("pt_leak_pressure", "LP 80 bar - MP N/A - HP 80 bar");
+          setValue("pt_leak_time", "16 timer");
+          setSelect("pt_leak_deviation", "NEI");
+          setValue("pt_leak_report", "Ok");
+
+          setValue("pt_vacuum_value", "IR");
+          setValue("pt_vacuum_time", "IR");
+          setValue("pt_vacuum_report", "IR");
+        }
+      });
+
+      function setValue(name, value) {
+        const el = document.querySelector(`[name="${name}"]`);
+        if (el) el.value = value;
+      }
+
+      function setSelect(name, value) {
+        const el = document.querySelector(`[name="${name}"]`);
+        if (el) el.value = value;
+      }
+
+      function checkRadio(name, value) {
+        const el = document.querySelector(`[name="${name}"][value="${value}"]`);
+        if (el) el.checked = true;
+      }
+    });
+  </script>
+</body>
+</html>
